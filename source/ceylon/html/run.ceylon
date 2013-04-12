@@ -19,14 +19,23 @@ Html layout = Html {
             },
             Div {
                 id = "users";
-                for (i -> user in users.indexed)
-                    Div("``i``: ``user``")
-            }
+                for (i -> user in users.indexed) {
+                    Div {
+                        "``i``: ``user``";
+                        id = "user-``i``";
+                    }
+                }
+            },
+            users.size > 1 then
+                Div {
+                    "``users.size`` records";
+                    classNames = "pagination";
+                }
         }
     };
 };
 
-doc "Run the module `drochetti.html2`."
+doc "Run the module `ceylon.html`."
 void run() {
     object consoleSerializer extends HtmlSerializer(layout) {
         print(String string) => process.write(string);
