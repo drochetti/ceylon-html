@@ -1,10 +1,13 @@
 
-shared class Div(String? accessKey = null,
+shared class Div(text = "", String? accessKey = null,
         CssClass classNames = [], String? contextMenu = null,
         String? id = null, Boolean? hidden = null, String? lang = null,
         Boolean? spellcheck = null, String? title = null,
         Boolean? translate = null, {HtmlNode?*} children = {})
     extends Element(accessKey, classNames, contextMenu,
-        id, hidden, lang, spellcheck, title, translate, children) {
+        id, hidden, lang, spellcheck, title, translate, children)
+    satisfies TextNode {
+
+    shared actual String text;
 
 }
