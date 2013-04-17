@@ -16,7 +16,7 @@ shared interface Node {
 
 }
 
-//shared alias HtmlBaseNode => Node|{Node*}|[Node*];
+//shared alias HtmlNode => Node|{Node*}|[Node*]|String;
 
 shared alias HtmlNode => Node|{Node*}|[Node*];
 

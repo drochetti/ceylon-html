@@ -105,13 +105,20 @@ shared abstract class HtmlSerializer(root, doctype = null,
         }
     }
 
+    //void visitTextNode(String node) {
+    //    print(node);
+    //}
+
     void visitHtmlNode(HtmlNode node) {
         if (is Node node) {
             visit(node);
         } else if (is {Node*} node) {
             visitNodes(node);
         }
-        // TODO use switch-case to exhaust all cases
+        //else if (is String node) {
+        //    visitTextNode(node);
+        //}
+        // TODO use switch-case to exhaust all cases ?
     }
 
     String tagName(Node node) => node.tagName.lowercased;
