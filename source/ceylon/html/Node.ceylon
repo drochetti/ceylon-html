@@ -7,17 +7,13 @@ shared interface Node {
         if (exists lastDot = tag.lastOccurrence(":")) {
             tag = tag[(lastDot + 1)...];
         }
-        return tag;
+        return tag.lowercased;
     }
 
     shared default Tag tag => Tag(tagName);
-
-    shared formal {HtmlNode?*} children;
 
 }
 
 //shared alias HtmlNode => Node|{Node*}|[Node*]|String;
 
-shared alias HtmlNode => Node|{Node*}|[Node*];
-
-//shared alias Nodes => {HtmlNode?*};
+shared alias HtmlNode => Node|{Node*}|[Node*]|Snippet;

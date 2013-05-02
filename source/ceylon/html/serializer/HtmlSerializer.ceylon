@@ -1,4 +1,8 @@
-import ceylon.html { allDoctypes, Node, Doctype, Html, Element, TextNode, blockTag, inlineTag, xhtmlDoctypes, CssClass, HtmlNode }
+import ceylon.html { allDoctypes, Node, Doctype, Html, Element, TextNode, blockTag, inlineTag, xhtmlDoctypes, CssClass, HtmlNode, Snippet, ParentNode }
+
+//{<String -> NodeSerializer<Node>>+} serilizers = {
+//    "head" -> HeadSerializer(),
+//};
 
 shared abstract class HtmlSerializer(root, doctype = null,
         supportedDoctypes = allDoctypes) {
@@ -35,10 +39,12 @@ shared abstract class HtmlSerializer(root, doctype = null,
             indent();
             print(node.text);
         }
-        for (child in node.children) {
-            if (exists child) {
-                linefeed();
-                visitHtmlNode(child);
+        if (is ParentNode node) {
+            for (child in node.children) {
+                if (exists child) {
+                    linefeed();
+                    visitHtmlNode(child);
+                }
             }
         }
         indentLevel--;
@@ -59,7 +65,7 @@ shared abstract class HtmlSerializer(root, doctype = null,
         printAttributes(node);
     }
 
-    void openTag(Node node) => print("<``tagName(node)``");
+    void openTag(Node node) => print("<``node.tag.name``");
 
     void endOpenTag(Node node) {
         if (node.tag.type == inlineTag) {
@@ -70,7 +76,7 @@ shared abstract class HtmlSerializer(root, doctype = null,
         print(">");
     }
 
-    void closeTag(Node node) => print("</``tagName(node)``>");
+    void closeTag(Node node) => print("</``node.tag.name``>");
 
     void printAttributes(Element node) {
         printAttribute("id", node.id);
@@ -114,14 +120,14 @@ shared abstract class HtmlSerializer(root, doctype = null,
             visit(node);
         } else if (is {Node*} node) {
             visitNodes(node);
+        } else if (is Snippet node) {
+            visit(node.content);
         }
         //else if (is String node) {
         //    visitTextNode(node);
         //}
         // TODO use switch-case to exhaust all cases ?
     }
-
-    String tagName(Node node) => node.tagName.lowercased;
 
     void linefeed(Boolean force = false) {
         if (prettyPrint || force) {

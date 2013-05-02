@@ -1,7 +1,8 @@
 
 doc ""
 by "Daniel Rochetti"
-shared class Html(doctype = html5, head = Head(), body = Body()) satisfies Node {
+shared class Html(doctype = html5, head = Head(), body = Body())
+        satisfies ParentNode {
 
     shared Doctype doctype;
 

@@ -52,7 +52,7 @@ shared object html5 extends Doctype() {
 }
 
 shared {Doctype+} allDoctypes = {
-    html5, html4Strict, html4Transitional,  html4Frameset,
+    html5, html4Strict, html4Transitional, html4Frameset,
     xhtml11, xhtml11Basic, xhtml1Strict, xhtml1Transitional, xhtml1Frameset
 };
 
