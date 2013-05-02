@@ -1,6 +1,16 @@
 import ceylon.html.serializer { HtmlSerializer }
+import ceylon.html.microformats { Card, CardData }
 
-[String+] users = ["Daniel", "John", "Doe"];
+
+class User(fullName) satisfies CardData {
+    shared actual String fullName;
+}
+
+[User+] users = [User {
+    fullName = "Daniel Rochetti";
+}, User {
+    fullName = "John Doe";
+}];
 
 Html layout = Html {
     doctype = html5;
@@ -11,18 +21,18 @@ Html layout = Html {
     Body {
         Div {
             classNames = ["wrapper", "container"];
-            Div {
+            Div(
                 users.empty then
-                    Div("No users...")
+                    "No users..."
                 else
-                    Div("There are ``users.size`` users!")
-            },
+                    "There are ``users.size`` users!"
+            ),
             Div {
                 id = "users";
                 for (i -> user in users.indexed) {
                     Div {
-                        "``i``: ``user``";
                         id = "user-``i``";
+                        Card(user)
                     }
                 }
             },
