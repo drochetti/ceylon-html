@@ -16,6 +16,9 @@ Html layout = Html {
     doctype = html5;
     Head {
         title = "Page Title";
+        links = {
+            CssLink("http://fonts.googleapis.com/css?family=Open+Sans")
+        };
         stylesheets = {};
     };
     Body {

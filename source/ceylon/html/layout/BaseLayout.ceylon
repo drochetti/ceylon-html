@@ -22,6 +22,7 @@ shared abstract class BaseLayout() satisfies Layout {
     shared default HtmlNode footer => {};
 
     html => Html {
+
         doctype = html5;
 
         Head {
