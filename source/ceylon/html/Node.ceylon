@@ -1,5 +1,5 @@
-doc ""
-by "Daniel Rochetti"
+"Represents a node in the `Document` tree."
+see(ParentNode, TextNode, Document)
 shared interface Node {
 
     shared default String tagName {
