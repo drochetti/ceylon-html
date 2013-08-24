@@ -48,7 +48,7 @@ Html layout = Html {
     };
 };
 
-doc "Run the module `ceylon.html`."
+"Run the module `ceylon.html`."
 void run() {
     object consoleSerializer extends HtmlSerializer(layout) {
         print(String string) => process.write(string);
