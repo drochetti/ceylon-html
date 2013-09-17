@@ -1,4 +1,18 @@
-import ceylon.html { allDoctypes, Node, Doctype, Html, Element, TextNode, blockTag, inlineTag, xhtmlDoctypes, CssClass, HtmlNode, Snippet, ParentNode }
+import ceylon.html {
+    allDoctypes,
+    Node,
+    Doctype,
+    Html,
+    Element,
+    TextNode,
+    blockTag,
+    inlineTag,
+    xhtmlDoctypes,
+    CssClass,
+    HtmlNode,
+    Snippet,
+    ParentNode
+}
 
 //{<String -> NodeSerializer<Node>>+} serilizers = {
 //    "head" -> HeadSerializer(),
@@ -17,11 +31,20 @@ shared abstract class HtmlSerializer(root, doctype = null,
 
     variable value indentLevel = 0;
 
+    variable value sizeCount = 0;
+
     shared formal void print(String string);
 
     Boolean prettyPrint = true; // TODO refactor to serializer configuration
 
     shared void serialize() => visit(root);
+
+    shared Integer contentLength => sizeCount;
+
+    void doPrint(String string) {
+        sizeCount += string.size; // TODO accurate byte size?
+        print(string);
+    }
 
     void visit(Node node) {
         if (is Html node) {
@@ -37,7 +60,7 @@ shared abstract class HtmlSerializer(root, doctype = null,
         if (is TextNode node, !node.text.trimmed.empty) {
             linefeed();
             indent();
-            print(node.text);
+            doPrint(node.text);
         }
         if (is ParentNode node) {
             for (child in node.children) {
@@ -56,7 +79,7 @@ shared abstract class HtmlSerializer(root, doctype = null,
     }
 
     void startHtml(Html html) {
-        print(html.doctype.string);
+    doPrint(html.doctype.string);
         linefeed(true);
         linefeed();
     }
@@ -65,18 +88,18 @@ shared abstract class HtmlSerializer(root, doctype = null,
         printAttributes(node);
     }
 
-    void openTag(Node node) => print("<``node.tag.name``");
+    void openTag(Node node) => doPrint("<``node.tag.name``");
 
     void endOpenTag(Node node) {
         if (node.tag.type == inlineTag) {
             if (exists doctype, doctype in xhtmlDoctypes) {
-                print("/");
+                doPrint("/");
             }
         }
-        print(">");
+        doPrint(">");
     }
 
-    void closeTag(Node node) => print("</``node.tag.name``>");
+    void closeTag(Node node) => doPrint("</``node.tag.name``>");
 
     void printAttributes(Element node) {
         printAttribute("id", node.id);
@@ -87,7 +110,7 @@ shared abstract class HtmlSerializer(root, doctype = null,
 
     void printAttribute(String name, Object? val) {
         if (exists val) {
-            print(" ``name``=\"``val``\"");
+            doPrint(" ``name``=\"``val``\"");
         }
     }
 
@@ -131,13 +154,13 @@ shared abstract class HtmlSerializer(root, doctype = null,
 
     void linefeed(Boolean force = false) {
         if (prettyPrint || force) {
-            print(process.newline);
+            doPrint(process.newline);
         }
     }
 
     void indent() {
         if (prettyPrint) {
-            print(indentString);
+            doPrint(indentString);
         }
     }
 

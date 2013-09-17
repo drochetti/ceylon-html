@@ -1,7 +1,7 @@
 import ceylon.language.model { type }
 
 "Represents a node in the `Document` tree."
-see(`ParentNode`, `TextNode`, `Document`)
+see(`interface ParentNode`, `interface TextNode`, `interface Document`)
 shared interface Node {
 
     shared default String tagName {

@@ -2,10 +2,10 @@ import ceylon.html { HtmlNode, Html, html5, Head, Meta, Body, Div, Script }
 import ceylon.io.charset { utf8 }
 
 "A simple HTML5 boilerplate layout."
-shared abstract class BaseLayout() satisfies Layout {
+shared class BaseLayout(title, body = Div()) satisfies Layout {
 
     "The page title."
-    shared formal String title;
+    shared String title;
 
     "The page meta description."
     shared default String description = "";
@@ -15,7 +15,7 @@ shared abstract class BaseLayout() satisfies Layout {
     shared default {String*} stylesheets = {};
 
     "The page body _block_."
-    shared formal HtmlNode body;
+    shared HtmlNode body;
 
     shared default {Script*} bodyScripts = {};
 
@@ -46,26 +46,5 @@ shared abstract class BaseLayout() satisfies Layout {
         };
 
     };
-
-}
-
-// TODO remove - just testing how code would look
-
-interface View {
-    shared formal Html|Layout render();
-}
-
-class IndexView(/*Model*/) satisfies View {
-    
-    shared actual Html|Layout render() {
-        object index extends BaseLayout() {
-            title = "Home";
-            
-            body => Div {
-                "Welcome to the Home page!";
-            };
-        }
-        return index;
-    }
 
 }
