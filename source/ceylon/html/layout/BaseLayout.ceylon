@@ -1,5 +1,16 @@
-import ceylon.html { HtmlNode, Html, html5, Head, Meta, Body, Div, Script }
-import ceylon.io.charset { utf8 }
+import ceylon.html {
+    HtmlNode,
+    Html,
+    html5,
+    Head,
+    Meta,
+    Body,
+    Div,
+    Script
+}
+import ceylon.io.charset {
+    utf8
+}
 
 "A simple HTML5 boilerplate layout."
 shared class BaseLayout(title, body = Div()) satisfies Layout {
@@ -31,7 +42,7 @@ shared class BaseLayout(title, body = Div()) satisfies Layout {
             metaContent = {
                 Meta("description", description)
             };
-            stylesheets = join({
+            stylesheets = concatenate({
             }, stylesheets);
             scripts = headScripts;
         };

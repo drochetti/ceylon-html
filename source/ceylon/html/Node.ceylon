@@ -1,4 +1,6 @@
-import ceylon.language.model { type }
+import ceylon.language.meta {
+    type
+}
 
 "Represents a node in the `Document` tree."
 see(`interface ParentNode`, `interface TextNode`, `interface Document`)

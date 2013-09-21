@@ -1,4 +1,7 @@
-import ceylon.io.charset { Charset, utf8 }
+import ceylon.io.charset {
+    Charset,
+    utf8
+}
 
 "Groups the metadata of the `Html` document, such as page description,
  links to resources, stylesheets and scripts."
@@ -24,6 +27,6 @@ shared class Head(title = "", charset = utf8,
     shared {Script*} scripts;
 
     // TODO join children (meta, scripts, etc)
-    shared actual {HtmlNode?*} children => join(metaContent, scripts);
+    shared actual {HtmlNode?*} children => concatenate(metaContent, scripts);
 
 }
