@@ -1,6 +1,6 @@
 ""
 shared class Html(doctype = html5, head = Head(), body = Body())
-        satisfies ParentNode & Document {
+        satisfies ParentNode<Head|Body> & Document {
 
     shared actual Doctype doctype;
 
@@ -8,8 +8,10 @@ shared class Html(doctype = html5, head = Head(), body = Body())
 
     shared Body body;
 
-    shared actual {HtmlNode?*} children => { head, body };
+    shared actual {<Head|Body>*} children = { head, body };
 
     shared actual Node root => body;
+
+    
     
 }

@@ -2,9 +2,8 @@
  for both server and client using native Ceylon."
 by("Daniel Rochetti")
 tagged("web", "html", "template", "layout")
-module ceylon.html '0.6' {
-    import ceylon.collection '0.6';
-    shared import ceylon.io '0.6';
-    import ceylon.language '0.6';
+module ceylon.html '1.0.0' {
+    import ceylon.collection "1.0.0";
+    shared import ceylon.io '1.0.0';
     //shared import ceylon.style '0.6';
 }

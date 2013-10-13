@@ -1,12 +1,13 @@
 import ceylon.html {
-    HtmlNode,
     Html,
     html5,
     Head,
     Meta,
     Body,
     Div,
-    Script
+    Script,
+    CharsetMeta,
+    BlockElement
 }
 import ceylon.io.charset {
     utf8
@@ -26,11 +27,11 @@ shared class BaseLayout(title, body = Div()) satisfies Layout {
     shared default {String*} stylesheets = {};
 
     "The page body _block_."
-    shared HtmlNode body;
+    shared BlockElement|Null|{BlockElement*} body;
 
     shared default {Script*} bodyScripts = {};
 
-    shared default HtmlNode footer => {};
+    shared default BlockElement|Null|{BlockElement*} footer => {};
 
     html => Html {
 
@@ -38,8 +39,8 @@ shared class BaseLayout(title, body = Div()) satisfies Layout {
 
         Head {
             title = title;
-            charset = utf8;
             metaContent = {
+                CharsetMeta(utf8),
                 Meta("description", description)
             };
             stylesheets = concatenate({

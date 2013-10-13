@@ -1,11 +1,16 @@
 
-"""A default `Node` implementation. Represents a HTML element.
-   An `Element` consists of a tag name, some atributes and
-   sometimes children nodes."""
+
+shared alias ExtraAttributes => {<String->Object>*};
+
+shared alias CssClass => String|[String*]; // TODO ceylon-style integration
+
+"A default `Node` implementation. Represents a HTML element.
+ An `Element` consists of a tag name, some atributes and
+ sometimes children nodes."
 shared abstract class Element(accessKey = null, classNames = [],
-        contextMenu = null, id = null,
-        hidden = null, lang = null, spellcheck = null, style = null,
-        title = null, translate = null) satisfies Node {
+        contextMenu = null, id = null, hidden = null, lang = null,
+        spellcheck = null, style = null, title = null, translate = null,
+        aria = null, attributes = {}) satisfies Node {
 
     "Specifies a shortcut key that can be used to access the element."
     shared String? accessKey; // TODO static typed KeyStroke?
@@ -35,7 +40,28 @@ shared abstract class Element(accessKey = null, classNames = [],
     shared String? title;
 
     shared Boolean? translate;
+    
+    shared Aria? aria;
+
+    shared ExtraAttributes attributes;
 
 }
 
-shared alias CssClass => String|[String*];
+shared alias BlockElements => Div|H1|H2;
+
+
+shared interface ElementType
+        of BlockElement | InlineElement | TableElement
+            | FormElement | FormInputElement
+        satisfies Node {
+}
+
+shared interface BlockElement satisfies ElementType {}
+
+shared interface InlineElement satisfies ElementType {}
+
+shared interface FormElement satisfies ElementType {}
+
+shared interface FormInputElement satisfies ElementType {}
+
+shared interface TableElement satisfies ElementType {}

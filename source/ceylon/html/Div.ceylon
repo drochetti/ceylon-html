@@ -1,15 +1,17 @@
 
+
 shared class Div(text = "", String? accessKey = null,
         CssClass classNames = [], String? contextMenu = null,
         String? id = null, Boolean? hidden = null, String? lang = null,
         Boolean? spellcheck = null, String? style = null, String? title = null,
-        Boolean? translate = null, children = {})
-    extends Element(accessKey, classNames, contextMenu,
-        id, hidden, lang, spellcheck, style, title, translate)
-    satisfies TextNode & ParentNode {
+        Boolean? translate = null, Aria? aria = null,
+        ExtraAttributes attributes = {}, children = {})
+    extends Element(accessKey, classNames, contextMenu, id, hidden, lang,
+        spellcheck, style, title, translate, aria, attributes)
+    satisfies TextNode & BlockElement & ParentNode<BlockElement> {
 
     shared actual String text;
 
-    shared actual {HtmlNode?*} children;
+    shared actual {<BlockElement|{BlockElement*}|Null>*} children;
 
 }

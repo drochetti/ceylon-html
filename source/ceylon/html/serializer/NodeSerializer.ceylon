@@ -1,31 +1,15 @@
 import ceylon.html {
-    allDoctypes,
     Node,
-    Doctype,
     Html,
     Element,
     TextNode,
     blockTag,
-    inlineTag,
-    xhtmlDoctypes,
     CssClass,
-    HtmlNode,
-    Snippet,
     ParentNode
 }
 
-//{<String -> NodeSerializer<Node>>+} serilizers = {
-//    "head" -> HeadSerializer(),
-//};
-
-shared abstract class HtmlSerializer(root, doctype = null,
-        supportedDoctypes = allDoctypes) {
-
-    shared Node root;
-
-    shared Doctype? doctype;
-
-    shared {Doctype+} supportedDoctypes;
+shared abstract class NodeSerializer(
+        SerializerConfig config = SerializerConfig()) {
 
     //shared Boolean isPartial => is Html root;
 
@@ -35,9 +19,9 @@ shared abstract class HtmlSerializer(root, doctype = null,
 
     shared formal void print(String string);
 
-    Boolean prettyPrint = true; // TODO refactor to serializer configuration
+    value prettyPrint = config.prettyPrint;
 
-    shared void serialize() => visit(root);
+    shared void serialize(Node root) => visit(root);
 
     shared Integer contentLength => sizeCount;
 
@@ -62,11 +46,15 @@ shared abstract class HtmlSerializer(root, doctype = null,
             indent();
             doPrint(node.text);
         }
-        if (is ParentNode node) {
+        if (is ParentNode<Node> node) {
             for (child in node.children) {
                 if (exists child) {
                     linefeed();
-                    visitHtmlNode(child);
+                    if (is Node child) {
+                        visit(child);
+                    } else if (is {Node*} child) {
+                        visitNodes(child);
+                    }
                 }
             }
         }
@@ -79,7 +67,7 @@ shared abstract class HtmlSerializer(root, doctype = null,
     }
 
     void startHtml(Html html) {
-    doPrint(html.doctype.string);
+        doPrint(html.doctype.string);
         linefeed(true);
         linefeed();
     }
@@ -91,11 +79,11 @@ shared abstract class HtmlSerializer(root, doctype = null,
     void openTag(Node node) => doPrint("<``node.tag.name``");
 
     void endOpenTag(Node node) {
-        if (node.tag.type == inlineTag) {
-            if (exists doctype, doctype in xhtmlDoctypes) {
-                doPrint("/");
-            }
-        }
+        //if (node.tag.type == inlineTag) {
+        //    if (exists doctype, doctype in xhtmlDoctypes) {
+        //        doPrint("/");
+        //    }
+        //}
         doPrint(">");
     }
 
@@ -138,19 +126,17 @@ shared abstract class HtmlSerializer(root, doctype = null,
     //    print(node);
     //}
 
-    void visitHtmlNode(HtmlNode node) {
-        if (is Node node) {
-            visit(node);
-        } else if (is {Node*} node) {
-            visitNodes(node);
-        } else if (is Snippet node) {
-            visit(node.content);
-        }
-        //else if (is String node) {
-        //    visitTextNode(node);
-        //}
-        // TODO use switch-case to exhaust all cases ?
-    }
+    //void visitHtmlNode(HtmlNode node) {
+    //    if (is Node node) {
+    //        visit(node);
+    //    } else if (is {Node*} node) {
+    //        visitNodes(node);
+    //    }
+    //    //else if (is String node) {
+    //    //    visitTextNode(node);
+    //    //}
+    //    // TODO use switch-case to exhaust all cases ?
+    //}
 
     void linefeed(Boolean force = false) {
         if (prettyPrint || force) {
@@ -169,4 +155,11 @@ shared abstract class HtmlSerializer(root, doctype = null,
         return spaces > 0 then " ".repeat(spaces) else "";
     }
 
+}
+
+"A [[NodeSerializer]] implementation that prints content on console."
+shared object consoleSerializer extends NodeSerializer() {
+
+    print(String string) => process.write(string);
+    
 }

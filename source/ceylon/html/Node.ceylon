@@ -18,6 +18,29 @@ shared interface Node {
 
 }
 
-//shared alias HtmlNode => Node|{Node*}|[Node*]|String;
+shared interface ParentNode<out Child>
+        satisfies Node
+            given Child satisfies Node {
 
-shared alias HtmlNode => Node|{Node*}|[Node*]|Snippet;
+    shared formal {<Child|{Child*}|Null>*} children;
+
+}
+
+
+shared interface TextNode satisfies Node {
+    
+    shared formal String text;
+    
+}
+
+""
+shared interface Document satisfies Node {
+    
+    shared formal Doctype doctype;
+    
+    shared formal Node root;
+    
+}
+
+//shared alias HtmlNode => Node|{Node*}|[Node*];
+

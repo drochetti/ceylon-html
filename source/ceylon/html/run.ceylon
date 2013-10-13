@@ -1,15 +1,16 @@
-import ceylon.html.serializer { HtmlSerializer }
-import ceylon.html.microformats { Card, CardData }
+import ceylon.html.serializer {
+    consoleSerializer
+}
 
 
-class User(fullName) satisfies CardData {
-    shared actual String fullName;
+class User(name) {
+    shared String name;
 }
 
 [User+] users = [User {
-    fullName = "Daniel Rochetti";
+    name = "Daniel Rochetti";
 }, User {
-    fullName = "John Doe";
+    name = "John Doe";
 }];
 
 Html layout = Html {
@@ -30,14 +31,17 @@ Html layout = Html {
                 else
                     "There are ``users.size`` users!"
             ),
-            Div {
-                id = "users";
-                for (i -> user in users.indexed) {
-                    Div {
-                        id = "user-``i``";
-                        Card(user)
+            Table {
+                //id = "users";
+                header = {
+                    Th("#"),
+                    Th("Name")
+                };
+                for (i -> user in users.indexed)
+                    Tr {
+                        Td(i.string),
+                        Td(user.name)
                     }
-                }
             },
             users.size > 1 then
                 Div {
@@ -50,8 +54,5 @@ Html layout = Html {
 
 "Run the module `ceylon.html`."
 void run() {
-    object consoleSerializer extends HtmlSerializer(layout) {
-        print(String string) => process.write(string);
-    }
-    consoleSerializer.serialize();
+    consoleSerializer.serialize(layout);
 }

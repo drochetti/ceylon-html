@@ -6,8 +6,8 @@ shared class Body(String? accessKey = null,
         Boolean? translate = null, children = {})
     extends Element(accessKey, classNames, contextMenu,
         id, hidden, lang, spellcheck, style, title, translate)
-    satisfies ParentNode {
+    satisfies ParentNode<BlockElement|Script> {
 
-    shared actual {HtmlNode?*} children;
+    shared actual {<BlockElement|Null|Script|{BlockElement*}|{Script*}>*} children;
 
 }
