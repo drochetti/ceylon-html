@@ -22,7 +22,7 @@ shared interface ParentNode<out Child>
         satisfies Node
             given Child satisfies Node {
 
-    shared formal {<Child|{Child*}|Null>*} children;
+    shared formal {<Child|{Child*}|Snippet<Child>|Null>*} children;
 
 }
 

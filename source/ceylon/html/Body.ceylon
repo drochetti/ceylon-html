@@ -8,6 +8,7 @@ shared class Body(String? accessKey = null,
         id, hidden, lang, spellcheck, style, title, translate)
     satisfies ParentNode<BlockElement|Script> {
 
-    shared actual {<BlockElement|Null|Script|{BlockElement*}|{Script*}>*} children;
+    shared actual {<BlockElement|Null|Script|Snippet<BlockElement>|
+            {BlockElement*}|{Script*}>*} children;
 
 }

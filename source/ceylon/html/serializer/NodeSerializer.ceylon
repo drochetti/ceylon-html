@@ -5,7 +5,7 @@ import ceylon.html {
     TextNode,
     blockTag,
     CssClass,
-    ParentNode
+    ParentNode, Snippet
 }
 
 shared abstract class NodeSerializer(
@@ -30,6 +30,16 @@ shared abstract class NodeSerializer(
         print(string);
     }
 
+    void visitAny(Node|{Node*}|Snippet<Node> child) {
+        if (is Node child) {
+            visit(child);
+        } else if (is {Node*} child) {
+            visitNodes(child);
+        } else if (is Snippet<Node> child) {
+            visitAny(child.content);
+        }
+    }
+    
     void visit(Node node) {
         if (is Html node) {
             startHtml(node);
@@ -50,11 +60,7 @@ shared abstract class NodeSerializer(
             for (child in node.children) {
                 if (exists child) {
                     linefeed();
-                    if (is Node child) {
-                        visit(child);
-                    } else if (is {Node*} child) {
-                        visitNodes(child);
-                    }
+                    visitAny(child);
                 }
             }
         }

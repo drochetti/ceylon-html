@@ -1,22 +1,24 @@
 
-shared alias TableElements => THead|TBody|TFoot;
-
-shared class Table(header = {}, rows = {}, footer = {})
-        satisfies ParentNode<TableElements> & BlockElement {
+shared class Table(header = {}, rows = {}, footer = null)
+        satisfies ParentNode<TableElement> & BlockElement {
 
     shared {Th?*} header;
 
-    shared {Tr?*} rows;
+    shared {<Tr|Snippet<Tr>?>*} rows;
 
-    shared {Tr?*} footer;
+    shared {Tr?*}|Null footer;
 
-    shared actual {<TableElements|{TableElements*}|Null>*} children
-            => { THead(header), TBody(rows), TFoot(footer) };
+    shared actual {<TableElement|{TableElement*}|Null>*} children
+            => {
+                THead(header),
+                TBody(rows),
+                footer exists then TFoot(footer else {})
+            };
 
 }
 
 "Represents the header element of the HTML table."
-shared class THead({Th?*} headers = {})
+class THead({Th?*} headers = {})
         satisfies ParentNode<Tr> & TableElement {
 
     shared actual {Tr?*} children => { Tr(headers) };
@@ -24,15 +26,15 @@ shared class THead({Th?*} headers = {})
 }
 
 "Represents the body element of the HTML table."
-shared class TBody({Tr?*} rows = {})
+class TBody({<Tr|Snippet<Tr>?>*} rows = {})
         satisfies ParentNode<Tr> & TableElement {
 
-    shared actual {Tr?*} children = rows;
+    shared actual {<Tr|Snippet<Tr>?>*} children = rows;
 
 }
 
 "Represents the footer element of the HTML table."
-shared class TFoot({Tr?*} rows = {})
+class TFoot({Tr?*} rows = {})
         satisfies ParentNode<Tr> & TableElement {
 
     shared actual {Tr?*} children = rows;

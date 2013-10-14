@@ -47,12 +47,8 @@ shared abstract class Element(accessKey = null, classNames = [],
 
 }
 
-shared alias BlockElements => Div|H1|H2;
-
-
 shared interface ElementType
-        of BlockElement | InlineElement | TableElement
-            | FormElement | FormInputElement
+        of BlockElement | InlineElement | TableElement | FormElement
         satisfies Node {
 }
 
@@ -61,7 +57,5 @@ shared interface BlockElement satisfies ElementType {}
 shared interface InlineElement satisfies ElementType {}
 
 shared interface FormElement satisfies ElementType {}
-
-shared interface FormInputElement satisfies ElementType {}
 
 shared interface TableElement satisfies ElementType {}

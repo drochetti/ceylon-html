@@ -7,13 +7,23 @@ class User(name) {
     shared String name;
 }
 
+class UserRow(User user) satisfies Snippet<Tr> {
+
+    content = Tr {
+        Td(user.hash.string),
+        Td(user.name)
+    };
+
+}
+
+
 [User+] users = [User {
     name = "Daniel Rochetti";
 }, User {
     name = "John Doe";
 }];
 
-Html layout = Html {
+Html page = Html {
     doctype = html5;
     Head {
         title = "Page Title";
@@ -25,7 +35,7 @@ Html layout = Html {
     Body {
         Div {
             classNames = ["wrapper", "container"];
-            Div(
+            P(
                 users.empty then
                     "No users..."
                 else
@@ -38,10 +48,7 @@ Html layout = Html {
                     Th("Name")
                 };
                 for (i -> user in users.indexed)
-                    Tr {
-                        Td(i.string),
-                        Td(user.name)
-                    }
+                    UserRow(user)
             },
             users.size > 1 then
                 Div {
@@ -54,5 +61,5 @@ Html layout = Html {
 
 "Run the module `ceylon.html`."
 void run() {
-    consoleSerializer.serialize(layout);
+    consoleSerializer.serialize(page);
 }
