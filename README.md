@@ -1,6 +1,8 @@
 ceylon-html
 ===========
 
+**Atention!** This repo is frozen. This module has been moved into the [ceylon-sdk](https://github.com/ceylon/ceylon-sdk/).
+
 A Ceylon SDK module that empower the developer to write HTML using only the Ceylon language and hence taking full advantage of all its features.
 Because of its expressiveness and it's friendly object instantiation syntax that allows developers to easily define tree-like structures, ceylon-html makes dynamic HTML generation easy and fast. That means there's no need for a "templating engine" and all its issues (mixing HTML and dynamic language, introducing new/akward constructs, loosing static typing, etc).
 
